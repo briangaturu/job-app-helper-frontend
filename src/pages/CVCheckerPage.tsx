@@ -1,15 +1,20 @@
 import { useState } from 'react';
-import { Shield, ArrowLeft } from 'lucide-react';
+import { Shield, ArrowLeft, Sparkles } from 'lucide-react';
 import { Layout } from '../components/layout/Layout';
 import { FileUpload } from '../components/cv-checker/FileUpload';
 import { ATSResults } from '../components/cv-checker/ATSResults';
 import { Button } from '../components/ui/Button';
+import { CoverLetterActions } from '../components/generations/coverLetterActions';
 import { cvCheckerService, CVCheckResponse } from '../services/cv-checker.api';
 
 export const CVCheckerPage = () => {
   const [isUploading, setIsUploading] = useState(false);
   const [result, setResult] = useState<CVCheckResponse | null>(null);
   const [error, setError] = useState<string>('');
+
+  const [isImproving, setIsImproving] = useState(false);
+  const [improvedCv, setImprovedCv] = useState<string | null>(null);
+  const [improveError, setImproveError] = useState<string>('');
 
   const handleFileSelect = async (file: File) => {
     setIsUploading(true);
@@ -29,9 +34,31 @@ export const CVCheckerPage = () => {
     }
   };
 
+  const handleImprove = async () => {
+    if (!result) return;
+
+    setIsImproving(true);
+    setImproveError('');
+
+    try {
+      const response = await cvCheckerService.improveCV(result.id);
+setImprovedCv(response.improvedCv);
+    } catch (err: any) {
+      console.error('CV improvement error:', err);
+      setImproveError(
+        err.response?.data?.message ||
+        'Failed to generate an improved CV. Please try again.'
+      );
+    } finally {
+      setIsImproving(false);
+    }
+  };
+
   const handleReset = () => {
     setResult(null);
     setError('');
+    setImprovedCv(null);
+    setImproveError('');
   };
 
   return (
@@ -110,6 +137,45 @@ export const CVCheckerPage = () => {
               analysis={result.analysis}
               fileName={result.fileName}
             />
+
+            {!improvedCv ? (
+              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 text-center">
+                <Sparkles className="h-8 w-8 text-primary-600 mx-auto mb-3" />
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Want a more ATS-friendly version?
+                </h3>
+                <p className="text-sm text-gray-600 mb-4">
+                  We'll rewrite your CV to fix the weaknesses above, using only the
+                  experience you already listed — nothing invented.
+                </p>
+                {improveError && (
+                  <p className="text-sm text-red-800 mb-3">{improveError}</p>
+                )}
+                <Button
+                  onClick={handleImprove}
+                  isLoading={isImproving}
+                  className="flex items-center gap-2 mx-auto"
+                >
+                  <Sparkles className="h-4 w-4" />
+                  Generate ATS-Optimized CV
+                </Button>
+              </div>
+            ) : (
+              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    Optimized CV
+                  </h3>
+                  <CoverLetterActions
+                    coverLetter={improvedCv}
+                    jobTitle={result.fileName.replace(/\.[^/.]+$/, '')}
+                  />
+                </div>
+                <pre className="whitespace-pre-wrap text-sm text-gray-700 font-sans">
+                  {improvedCv}
+                </pre>
+              </div>
+            )}
           </>
         )}
       </div>

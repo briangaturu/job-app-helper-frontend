@@ -1,6 +1,7 @@
 import { Calendar, Sparkles, Plus } from 'lucide-react';
 import { Generation } from '../../types';
 import { Button } from '../ui/Button';
+import { CoverLetterActions } from './coverLetterActions';
 import { format } from 'date-fns';
 
 interface GenerationCardProps {
@@ -31,7 +32,13 @@ export const GenerationCard = ({ generation, onCreateApplication }: GenerationCa
         <div className="mb-4 space-y-2">
           {output.coverLetter && (
             <div>
-              <p className="text-sm font-medium text-gray-700">Cover Letter:</p>
+              <div className="flex items-center justify-between mb-1">
+                <p className="text-sm font-medium text-gray-700">Cover Letter:</p>
+                <CoverLetterActions
+                  coverLetter={output.coverLetter}
+                  jobTitle={generation.jobTitle}
+                />
+              </div>
               <p className="text-sm text-gray-600 line-clamp-3">{output.coverLetter}</p>
             </div>
           )}

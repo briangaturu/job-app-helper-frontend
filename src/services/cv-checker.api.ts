@@ -20,9 +20,12 @@ export interface ATSAnalysis {
 }
 
 export interface CVCheckResponse {
+  id: number;
   fileName: string;
-  fileSize: number;
+  cvText: string;
   analysis: ATSAnalysis;
+  improvedCv: string | null;
+  createdAt: string;
 }
 
 export const cvCheckerService = {
@@ -36,6 +39,19 @@ export const cvCheckerService = {
       },
     });
 
+    return response.data;
+  },
+
+  improveCV: async (cvCheckId: number): Promise<CVCheckResponse> => {
+  const response = await api.post<CVCheckResponse>('/cv/improve', {
+    cvCheckId,
+  });
+
+  return response.data;
+},
+
+  listHistory: async (): Promise<CVCheckResponse[]> => {
+    const response = await api.get<CVCheckResponse[]>('/cv/history');
     return response.data;
   },
 };
