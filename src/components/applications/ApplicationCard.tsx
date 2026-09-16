@@ -5,6 +5,7 @@ import { format } from 'date-fns';
 
 interface ApplicationCardProps {
   application: Application;
+  onView: (application: Application) => void;
   onEdit: (application: Application) => void;
   onDelete: (id: number) => void;
   onInterview: (application: Application) => void;
@@ -12,6 +13,7 @@ interface ApplicationCardProps {
 
 export const ApplicationCard = ({ 
   application, 
+  onView,
   onEdit, 
   onDelete,
   onInterview 
@@ -25,7 +27,18 @@ export const ApplicationCard = ({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+    <div
+      className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer"
+      onClick={() => onView(application)}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          onView(application);
+        }
+      }}
+      role="button"
+      tabIndex={0}
+    >
       <div className="flex justify-between items-start mb-4">
         <div className="flex-1">
           <h3 className="text-lg font-semibold text-gray-900 mb-1">
@@ -54,7 +67,7 @@ export const ApplicationCard = ({
         Updated: {format(new Date(application.updatedAt), 'MMM d, yyyy')}
       </div>
 
-      <div className="flex gap-2">
+      <div className="flex gap-2" onClick={(event) => event.stopPropagation()}>
         <Button
           size="sm"
           variant="secondary"

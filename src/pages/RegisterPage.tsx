@@ -7,14 +7,21 @@ import { useAuthStore } from '../store/authStore';
 import { Input } from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
 
+interface RegisterFormData {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
 export const RegisterPage = () => {
   const navigate = useNavigate();
   const { login } = useAuthStore();
   const [error, setError] = useState('');
   
-  const { register, handleSubmit, watch, formState: { errors, isSubmitting } } = useForm();
+  const { register, handleSubmit, watch, formState: { errors, isSubmitting } } = useForm<RegisterFormData>();
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: RegisterFormData) => {
     try {
       setError('');
       const response = await authService.register(data.name, data.email, data.password);

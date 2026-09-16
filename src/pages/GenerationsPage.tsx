@@ -65,7 +65,7 @@ export const GenerationsPage = () => {
 
   const handleCreateApplication = async (generation: Generation) => {
     try {
-      const app = await applicationsService.create({
+      await applicationsService.create({
         jobTitle: generation.jobTitle || 'Untitled',
         jobText: generation.jobText,
         generationId: generation.id,

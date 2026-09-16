@@ -3,13 +3,18 @@ import { Input } from '../ui/Input';
 import { Textarea } from '../ui/Textarea';
 import { Button } from '../ui/Button';
 
+interface GenerationFormData {
+  jobTitle?: string;
+  jobText: string;
+}
+
 interface GenerationFormProps {
-  onSubmit: (data: { jobTitle?: string; jobText: string }) => Promise<void>;
+  onSubmit: (data: GenerationFormData) => Promise<void>;
   onCancel: () => void;
 }
 
 export const GenerationForm = ({ onSubmit, onCancel }: GenerationFormProps) => {
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
+  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<GenerationFormData>();
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

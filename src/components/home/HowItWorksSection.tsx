@@ -1,4 +1,4 @@
-import { FileText, Sparkles, FolderOpen, MessageSquare, BarChart, Shield } from 'lucide-react';
+import { FileText, Sparkles, FolderOpen, MessageSquare, BarChart } from 'lucide-react';
 
 const steps = [
   {

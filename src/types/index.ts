@@ -1,5 +1,12 @@
 export type Plan = 'free' | 'pro';
 
+export interface UserProfile {
+  headline?: string;
+  bio?: string;
+  location?: string;
+  certifications?: string[];
+}
+
 export type ApplicationStatus = 'saved' | 'applied' | 'interviewing' | 'offer' | 'rejected';
 
 export interface User {
@@ -10,6 +17,7 @@ export interface User {
   dailyGenerationCount: number;
   usageResetAt: string;
   createdAt: string;
+  profile?: UserProfile | null;
 }
 
 export interface Application {

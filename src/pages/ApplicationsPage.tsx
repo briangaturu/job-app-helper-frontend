@@ -18,6 +18,7 @@ export const ApplicationsPage = () => {
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingApp, setEditingApp] = useState<Application | undefined>();
+  const [selectedApp, setSelectedApp] = useState<Application | undefined>();
 
   useEffect(() => {
     loadApplications();
@@ -90,6 +91,10 @@ export const ApplicationsPage = () => {
     setIsModalOpen(true);
   };
 
+  const handleView = (app: Application) => {
+    setSelectedApp(app);
+  };
+
   const handleInterview = (app: Application) => {
     navigate(`/interviews/${app.id}`);
   };
@@ -156,6 +161,7 @@ export const ApplicationsPage = () => {
               <ApplicationCard
                 key={app.id}
                 application={app}
+                onView={handleView}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
                 onInterview={handleInterview}
@@ -174,6 +180,50 @@ export const ApplicationsPage = () => {
             onSubmit={editingApp ? handleUpdate : handleCreate}
             onCancel={handleModalClose}
           />
+        </Modal>
+
+        <Modal
+          isOpen={Boolean(selectedApp)}
+          onClose={() => setSelectedApp(undefined)}
+          title={selectedApp?.jobTitle || 'Application Details'}
+        >
+          {selectedApp && (
+            <div className="space-y-5">
+              <div className="flex flex-wrap items-center gap-3">
+                {selectedApp.company && (
+                  <p className="text-gray-600">{selectedApp.company}</p>
+                )}
+                <span className="px-3 py-1 rounded-full bg-gray-100 text-gray-800 text-xs font-medium uppercase">
+                  {selectedApp.status}
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                <div>
+                  <p className="font-medium text-gray-500">Created</p>
+                  <p className="text-gray-900">{new Date(selectedApp.createdAt).toLocaleString()}</p>
+                </div>
+                <div>
+                  <p className="font-medium text-gray-500">Last updated</p>
+                  <p className="text-gray-900">{new Date(selectedApp.updatedAt).toLocaleString()}</p>
+                </div>
+              </div>
+
+              <div>
+                <h4 className="font-semibold text-gray-900 mb-2">Job Description</h4>
+                <p className="whitespace-pre-wrap text-sm text-gray-700">
+                  {selectedApp.jobText || 'No job description added.'}
+                </p>
+              </div>
+
+              <div>
+                <h4 className="font-semibold text-gray-900 mb-2">Notes</h4>
+                <p className="whitespace-pre-wrap text-sm text-gray-700">
+                  {selectedApp.notes || 'No notes added.'}
+                </p>
+              </div>
+            </div>
+          )}
         </Modal>
       </div>
     </Layout>

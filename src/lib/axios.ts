@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+const apiHost = import.meta.env.VITE_API_URL || 'https://job-app-helper-backend.onrender.com';
+
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: `${apiHost.replace(/\/$/, '')}/api`,
   headers: {
     'Content-Type': 'application/json',
   },

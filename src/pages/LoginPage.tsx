@@ -7,14 +7,19 @@ import { useAuthStore } from '../store/authStore';
 import { Input } from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
 
+interface LoginFormData {
+  email: string;
+  password: string;
+}
+
 export const LoginPage = () => {
   const navigate = useNavigate();
   const { login } = useAuthStore();
   const [error, setError] = useState('');
   
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
+  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<LoginFormData>();
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: LoginFormData) => {
     try {
       setError('');
       const response = await authService.login(data.email, data.password);

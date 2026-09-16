@@ -81,7 +81,13 @@ src/
 
 ## Environment Setup
 
-The application expects the backend API to be running on `http://localhost:5000`. This is configured in `vite.config.ts` as a proxy.
+Production requests use the deployed backend at `https://job-app-helper-backend.onrender.com` by default. To use a local backend, create a `.env.local` file with:
+
+```bash
+VITE_API_URL=http://localhost:4000
+```
+
+The Vite development proxy remains available for local setups that use relative `/api` requests.
 
 ## Component Architecture
 
