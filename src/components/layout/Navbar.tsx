@@ -56,13 +56,22 @@ export const Navbar = () => {
                   <User className="h-5 w-5 text-gray-600" />
                   <span className="text-sm text-gray-700">{user.name}</span>
                   <span className={`px-2 py-1 text-xs rounded-full ${
-                    user.plan === 'pro' 
-                      ? 'bg-primary-100 text-primary-800' 
+                    user.plan === 'pro'
+                      ? 'bg-primary-100 text-primary-800'
                       : 'bg-gray-100 text-gray-800'
                   }`}>
                     {user.plan.toUpperCase()}
                   </span>
                 </div>
+
+                <Link
+                  to="/profile"
+                  className="flex items-center space-x-1 text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  <User className="h-4 w-4" />
+                  <span>Profile</span>
+                </Link>
+
                 <button
                   onClick={handleLogout}
                   className="flex items-center space-x-1 text-gray-700 hover:text-red-600 px-3 py-2 rounded-md text-sm font-medium"

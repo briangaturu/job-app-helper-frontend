@@ -9,6 +9,7 @@ import { ApplicationsPage } from './pages/ApplicationsPage';
 import { GenerationsPage } from './pages/GenerationsPage';
 import { InterviewsPage } from './pages/InterviewsPage';
 import { CVCheckerPage } from './pages/CVCheckerPage';
+import { ProfilePage } from './pages/ProfilePage';
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated } = useAuthStore();
@@ -84,6 +85,14 @@ function App() {
           element={
             <ProtectedRoute>
               <CVCheckerPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <ProfilePage />
             </ProtectedRoute>
           }
         />

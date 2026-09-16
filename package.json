@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "test": "vitest",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
@@ -24,6 +25,11 @@
     "zustand": "^4.5.0"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.0.0",
+    "@testing-library/react": "^15.0.0",
+    "@testing-library/user-event": "^14.0.0",
+    "jsdom": "^22.1.0",
+    "vitest": "^1.4.0",
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
